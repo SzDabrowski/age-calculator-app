@@ -16,22 +16,76 @@
 </head>
 <body>
 
-  Day
-  DD
+  <main>
 
-  Month
-  MM
 
-  Year
-  YYYY
+    <section class="input-flex">
+      <!--  for insterting data-->
+        <div class="input-container">
 
-  -- years
-  -- months
-  -- days
-  
+          <label for="day">month</label><br>
+          <input type="text" name="day" placeholder="dd">
+          
+          <br>
+          <small id="day-error-label" class="error-label" >
+            This field is required!</small>
+        </div>
+        
+        <div class="input-container">
+
+          <label for="month">day</label><br>
+          <input type="text" name="month" placeholder="mm">
+          
+          <br>
+          <small id="month-error-label" class="error-label" >
+             This field is required!</small>
+
+        </div>
+        
+        <div class="input-container">
+
+          <label for="year">year</label><br>
+          
+          <input type="text" name="year" placeholder="yyyy">
+          <br>
+          <small id="year-error-label" class="error-label" >
+            This field is required!</small>
+
+        
+          </div>
+
+    </section>
+
+
+
+    <span class="submit-container">
+
+      <hr />
+      
+      <button id="submit-data-button">
+        <img src="./assets/images/icon-arrow.svg" alt="svg">
+      </button>
+      
+    </span>
+
+
+    <section class="output-container">
+
+      <p><em id="output">--</em>years</p>
+
+      <p><em id="output">--</em>months</p>
+
+      <p><em id="output">--</em>days</p>
+
+    </section>
+  </main>
+
+<footer>
   <div class="attribution">
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
+    Coded by <a href="https://github.com/SzDabrowski">SzDabrowski</a>.
   </div>
+</footer>
+
 </body>
 </html>
