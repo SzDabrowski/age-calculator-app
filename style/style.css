@@ -1,0 +1,52 @@
+body {
+ display: grid;
+ place-content: center;
+}
+
+#main-container{
+
+}
+
+
+
+/* input */
+
+#input-flex{
+    display:flex;
+    flex-direction: row;
+}
+
+.input-container {
+
+}
+
+.input-container label {
+
+}
+
+
+.input-container input {
+
+}
+
+.input-container input::placeholder {
+
+}
+
+.input-container input:focus {
+
+}
+
+.error-label {
+
+}
+
+#submit-container {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+hr {
+    width: 70%;
+}
