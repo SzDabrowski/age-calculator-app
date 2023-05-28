@@ -13,14 +13,14 @@
 </head>
 <body>
 
-  <main>
+  <main id="main-container">
+ 
 
-
-    <section class="input-flex">
+    <section id="input-flex">
       <!--  for insterting data-->
         <div class="input-container">
 
-          <label for="day">month</label><br>
+          <label for="day">day</label><br>
           <input type="text" name="day" placeholder="dd">
           
           <br>
@@ -30,7 +30,7 @@
         
         <div class="input-container">
 
-          <label for="month">day</label><br>
+          <label for="month">month</label><br>
           <input type="text" name="month" placeholder="mm">
           
           <br>
@@ -55,7 +55,7 @@
 
 
 
-    <span class="submit-container">
+    <span id="submit-container">
 
       <hr />
       
@@ -66,16 +66,17 @@
     </span>
 
 
-    <section class="output-container">
+    <section id="output-container">
 
-      <p><em id="output">--</em>years</p>
+      <p class="output-label"><em id="years-output">--</em>years</p>
 
-      <p><em id="output">--</em>months</p>
+      <p class="output-label"><em id="months-output">--</em>months</p>
 
-      <p><em id="output">--</em>days</p>
+      <p class="output-label"><em id="days-output">--</em>days</p>
 
     </section>
   </main>
+
 
 <footer>
   <div class="attribution">
