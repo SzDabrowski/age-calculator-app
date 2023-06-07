@@ -92,6 +92,7 @@ hr {
     border-radius: 50%;
     padding: 15px;
     background-color: hsl(259, 100%, 65%);
+    border: none;
 }
 
 #submit-data-button:hover{
@@ -106,7 +107,7 @@ hr {
 .output-label {
     font-weight: 800;
     font-size: 40px;
-    margin: 0
+    margin: 0;
 }
 
 .output-label > em {
