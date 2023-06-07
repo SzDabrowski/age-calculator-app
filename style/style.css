@@ -72,7 +72,7 @@ input:focus {
 }
 
 .error-label {
-display:none;
+    display:none;
 }
 
 #submit-container {

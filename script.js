@@ -1,4 +1,4 @@
-import * as test from './tests.js';
+//import * as test from './tests.js';
 
 const date = new Date();
 
@@ -17,6 +17,21 @@ const outputElements = [
      document.getElementById("months-output"),
      document.getElementById("days-output")
 ]
+
+const errorLabels = [
+     document.getElementById("day-error-label"), //o - day
+     document.getElementById("month-error-label"), // 1 - month
+     document.getElementById("year-error-label"), //2 - year
+ ]
+ 
+ const errorMess = {
+     emptyField : "field is empty",
+     badDay : "The day number is not between 1-31",
+     badMonth: "The month number is not between 1-12",
+     badYear: "The year is in the future",
+     invalidDate: "The date is invalid",
+ };
+ 
 
 
 function formatDate (date) { 
@@ -56,14 +71,102 @@ const Calculate = {
 }
 
 
+//test
+
+function throwError(message,label){
+     if(typeof(message) === "string"){
+         label.innerHTML = message;
+     }
+ };
+ 
+ function notEmpty(input, inputIndex){
+     if(typeof(input) === 'string'){
+         if(input !== ''){
+             return true;
+         }
+         else
+         {
+             throwError(
+                 errorMess.emptyField,errorLabels[inputIndex]);
+             return false;
+         }
+     }
+ }
+ 
+ function isValid(input,inputIndex){
+     if(Boolean(input.match(/^[0-9]*$/)))
+     {
+         if(inputIndex === '0') //if day
+         {
+             if(0<input<=31)
+             {
+                 return true;
+             }
+             else
+             {
+                 throwError(
+                     errorMess.invalidDate,errorLabels[inputIndex]);
+                 return false;
+             }
+         }
+ 
+         if(inputIndex === '1') //if month
+         {
+             if(0<input<=12)
+             {
+                 return true;
+             } 
+             else 
+             {
+                 throwError(
+                     errorMess.invalidDate,errorLabels[inputIndex]);
+                 return false;
+             }
+         } 
+ 
+         if(inputIndex === '2') //if year
+         {
+             if(input.lenght() === '4')
+             {
+                 return true;
+             } 
+             else 
+             {
+                 throwError(
+                     errorMess.invalidDate,errorLabels[inputIndex]);
+                 return false;
+             }
+         }
+     }
+     else 
+     {
+         throwError(
+             errorMess.invalidDate,errorLabels[inputIndex]);
+         return false;
+     }
+ }
+ 
+ function isPast(submitdate,currentDate){
+     if(submitdate > currentDate)
+         {
+             throwError(
+                 errorMess.invalidDate,errorLabels[inputIndex]);
+             return false;
+         }
+ }
+
+
+
 //return input elemetns
 
 function getInputs () {
-     elements = Array.from(document.getElementsByTagName('input'));
-     inputs = []
+     var elements = Array.from(document.getElementsByTagName('input'));
+     var inputs = []
      elements.forEach((element,index) => {
-
-          if(element.value !== ''){inputs[index] = Number(element.value);}
+          var val = element.value;
+          if(notEmpty(val, index)
+          && isValid(val, index)
+          ){inputs[index] = Number(val);}
           else{console.log("${index} input is empty! ");}    
      });
 
