@@ -1,22 +1,14 @@
-//import * as test from './tests.js';
-
-const date = new Date();
-
 const submitBtn = document.getElementById("submit-data-button");
+const currentDate = new Date();
 
+const outputElements = {
+    years: document.getElementById("years-output"),
+    months: document.getElementById("months-output"),
+    days: document.getElementById("days-output")
+  };
 
-const currentDate = { 
-     day : date.getDate(),
-     month : date.getMonth(),
-     year : date.getFullYear(),
-     date: new Date(),
-}
+anyTestBad = false ;
 
-const outputElements = [
-     document.getElementById("years-output"),
-     document.getElementById("months-output"),
-     document.getElementById("days-output")
-]
 
 const errorLabels = [
      document.getElementById("day-error-label"), //o - day
@@ -24,34 +16,31 @@ const errorLabels = [
      document.getElementById("year-error-label"), //2 - year
  ]
  
- const errorMess = {
-     emptyField : "field is empty",
-     badDay : "The day number is not between 1-31",
-     badMonth: "The month number is not between 1-12",
-     badYear: "The year is in the future",
-     invalidDate: "The date is invalid",
+ const errorMessages = {
+     emptyField : "This field is required",
+     badDay : "Must be a valid day",
+     badMonth: "Must be a valid month",
+     badYear: " Must be in the past",
+     invalidDate: "Must be a valid date",
  };
  
 
 
-function formatDate (date) { 
-
-     newDate = new Date(date.year,date.month,date.day);
-     console.log(newDate);
-     return newDate;
-}
+ function formatDate(day, month, year) {
+    return new Date(year, month, day);
+  }
 
 //obj for data from input
 
 const submitDate = {
-     day : 23,
-     month: 4,
-     year: 1999,
-     date: '',
-     
-     setDate() { this.date=formatDate(this)},
-};
-
+    day: 23,
+    month: 4,
+    year: 1999,
+    date: null,
+    setDate() {
+      this.date = formatDate(this.day, this.month, this.year);
+    }
+  };
 //calculate diff
 
 const Calculate = {
@@ -73,84 +62,91 @@ const Calculate = {
 
 //test
 
-function throwError(message,label){
-     if(typeof(message) === "string"){
-         label.innerHTML = message;
-     }
- };
- 
- function notEmpty(input, inputIndex){
-     if(typeof(input) === 'string'){
-         if(input !== ''){
-             return true;
-         }
-         else
-         {
-             throwError(
-                 errorMess.emptyField,errorLabels[inputIndex]);
-             return false;
-         }
-     }
- }
+const errorHandler = {
+    errorLabels: document.getElementsByClassName("error-label"),
+    inputs: document.getElementsByTagName("input"),
+    inputContainers: document.getElementsByClassName("input-container"),
+    redColor: "hsl(0, 100%, 67%)",
+    grayColor: "hsl(0, 1%, 44%)",
+    lightGrayColor: "hsl(0, 0%, 86%)",
+  
+    showError(index) {
+      this.errorLabels[index].style.display = "inline";
+      this.inputs[index].style.borderColor = this.redColor;
+      Array.from(this.inputs).forEach((element, index) => {
+        element.style.borderColor = this.redColor;
+        this.inputContainers[index].getElementsByTagName("label")[0].style.color = this.redColor;
+    });
+    },
+  
+    hideError(index) {
+      this.errorLabels[index].style.display = "none";
+      this.inputs[index].style.borderColor = this.lightGrayColor;
+      this.inputContainers[index].getElementsByTagName("label")[0].style.color = this.grayColor;
+    },
+  
+    throwError(message, index) {
+        if (typeof message === "string") {
+            errorLabels[index].innerHTML = message;
+            this.showError(index);
+            anyTestBad = true; // Set the flag to true
+        }
+      }
+  };
+
+  function notEmpty(input, inputIndex) {
+    if (typeof input === "string") {
+      if (input !== "") {
+        return true;
+      } else {
+        return errorHandler.throwError(errorMessages.emptyField, inputIndex);
+      }
+    }
+  }
  
  function isValid(input,inputIndex){
-     if(Boolean(input.match(/^[0-9]*$/)))
-     {
-         if(inputIndex === '0') //if day
-         {
-             if(0<input<=31)
-             {
-                 return true;
-             }
-             else
-             {
-                 throwError(
-                     errorMess.invalidDate,errorLabels[inputIndex]);
-                 return false;
-             }
-         }
+    if (Boolean(input.match(/^[0-9]*$/))) {
+        if (inputIndex === 0) {
+          if (input > 0 && input < 32) {
+            return true;
+          } else {
+            return errorHandler.throwError(errorMessages.badDay, inputIndex);
+          }
+        }
  
-         if(inputIndex === '1') //if month
-         {
-             if(0<input<=12)
-             {
-                 return true;
-             } 
-             else 
-             {
-                 throwError(
-                     errorMess.invalidDate,errorLabels[inputIndex]);
-                 return false;
-             }
-         } 
+        if (inputIndex === 1) {
+            if (input > 0 && input < 13) {
+              return true;
+            } else {
+              return errorHandler.throwError(errorMessages.badMonth, inputIndex);
+            }
+          }
  
-         if(inputIndex === '2') //if year
-         {
-             if(input.lenght() === '4')
-             {
-                 return true;
-             } 
-             else 
-             {
-                 throwError(
-                     errorMess.invalidDate,errorLabels[inputIndex]);
-                 return false;
-             }
-         }
-     }
-     else 
-     {
-         throwError(
-             errorMess.invalidDate,errorLabels[inputIndex]);
-         return false;
-     }
- }
+        if(inputIndex === 2) {
+            if (String(input).length === 4 && input < currentDate.getFullYear()) {
+              return true;
+            } else if(String(input).length === 4){
+                return errorHandler.throwError(errorMessages.badYear, inputIndex);
+            }else {
+              return errorHandler.throwError(errorMessages.invalidDate, inputIndex);
+            }
+          }
+        } else {
+          return errorHandler.throwError(errorMessages.invalidDate, inputIndex);
+        }
+      }
+
+function isReal(day, month, year) {
+    const newDate = new Date(year, month, day);
+    if(!(newDate.getDate() === day)  || !(newDate.getMonth() === month))
+        {errorHandler.throwError(errorMessages.invalidDate,0)};
+} 
  
  function isPast(submitdate,currentDate){
      if(submitdate > currentDate)
          {
-             throwError(
-                 errorMess.invalidDate,errorLabels[inputIndex]);
+            errorHandler.throwError(
+                 errorMessages.invalidDate,inputIndex);
              return false;
          }
  }
@@ -160,39 +156,59 @@ function throwError(message,label){
 //return input elemetns
 
 function getInputs () {
-     var elements = Array.from(document.getElementsByTagName('input'));
-     var inputs = []
-     elements.forEach((element,index) => {
-          var val = element.value;
-          if(notEmpty(val, index)
-          && isValid(val, index)
-          ){inputs[index] = Number(val);}
-          else{console.log("${index} input is empty! ");}    
-     });
+    for(let i = 0; i < 3; i++){ //setall error labels to hidden by default
+        errorHandler.hideError(i);
+    }
+
+    const inputElements = Array.from(document.getElementsByTagName('input'));
+    const inputs = []
+
+    inputElements.forEach((element,index) => {
+        const value = element.value;
+        if (notEmpty(value, index) && isValid(value, index)) {
+            inputs[index] = Number(value);
+            bNoErr = true;
+          }
+        });
+
+    const [day, month, year] = inputs;
+    
+    if(day!==undefined && month!==undefined & year!==undefined){
+        isReal(day, month - 1, year);
+    }
+        
 
      return inputs;
 }
 
-function showOutput () {
-
-     diff = Calculate.diffTime();
-
-     outputElements[0].innerHTML = Calculate.years(diff);
-     outputElements[1].innerHTML = Calculate.months(diff);
-     outputElements[2].innerHTML = Calculate.days(diff);
-}
-
+function showOutput() {
+    const diff = currentDate - submitDate.date;
+    const dayValue = (1000 * 60 * 60 * 24);
+    const showNoValue = "--";
+    
+    if(!anyTestBad){
+        outputElements.years.innerHTML = Math.floor(diff / (dayValue * 365));
+        outputElements.months.innerHTML = Math.floor(diff / (dayValue * 30));
+        outputElements.days.innerHTML = Math.floor(diff / dayValue );
+    }
+    else
+    {
+        outputElements.years.innerHTML = showNoValue;
+        outputElements.months.innerHTML = showNoValue;
+        outputElements.days.innerHTML = showNoValue;
+    }
+  }
 
 //event handler
 
-submitBtn.addEventListener("click", () => {
+submitBtn.addEventListener("click", () => { 
      
-     inputs = getInputs();
+    anyTestBad = false; // Reset the flag before running the tests
 
+     inputs = getInputs();
      submitDate.day = inputs[0];
      submitDate.month = inputs[1]-1; // 0 - jan
      submitDate.year = inputs[2];
-
      submitDate.setDate();  //format full date from submit
 
      showOutput();
