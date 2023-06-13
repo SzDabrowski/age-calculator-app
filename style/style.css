@@ -120,3 +120,34 @@ footer{
     bottom: 0;
     width: 100%;
 }
+
+@media (max-width:375px) {
+    #main-container {
+        width: 80%;
+    }
+
+    .input-container label {
+        font-size: 12px;
+    }
+
+    .input-container input {
+        font-size: 18px;
+    }
+
+    #submit-container {
+        margin-top: 30px;
+        flex-direction: column;
+    }
+
+    #submit-data-button {
+        position: relative;
+        top: -38px;
+    }
+
+    hr {
+        flex-grow: 1;
+        width: 100%;
+        offset-position: bottom;
+    }
+
+}
