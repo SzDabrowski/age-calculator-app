@@ -53,7 +53,7 @@ body {
     width: 80%;
     font-size: 32px;
     font-weight: 700;
-    border: solid 2px hsl(0, 0%, 86%);
+    border: solid 1px hsl(0, 0%, 86%);
     border-radius: 10px;
 
 }
@@ -67,7 +67,7 @@ body {
 
 input:focus {
     outline: none;
-    border: solid 2px hsl(259, 100%, 65%);
+    border: solid 3px hsl(259, 100%, 65%);
 }
 
 .error-label {
@@ -121,7 +121,15 @@ footer{
     width: 100%;
 }
 
-@media (max-width:375px) {
+@media only screen and (max-width: 768px) {
+
+    .input-container input {
+        font-size: 25px;
+    }
+ 
+}
+
+@media only screen and (max-width:400px) {
     #main-container {
         width: 80%;
     }

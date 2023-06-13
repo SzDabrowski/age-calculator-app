@@ -41,24 +41,6 @@ const submitDate = {
       this.date = formatDate(this.day, this.month, this.year);
     }
   };
-//calculate diff
-
-const Calculate = {
-
-     diffTime : () => 
-          Math.floor(currentDate.date-submitDate.date),
-
-     days  : (diff) => 
-          Math.ceil(diff / (1000 * 60 * 60 * 24)),
-
-     months  : (diff) => 
-          Math.floor(Math.ceil(diff / (1000 * 60 * 60 * 24))/30),
-
-     years  : (diff) => 
-          Math.floor(
-               Math.ceil(diff / (1000 * 60 * 60 * 24))/(30*12))
-}
-
 
 //test
 
@@ -73,10 +55,7 @@ const errorHandler = {
     showError(index) {
       this.errorLabels[index].style.display = "inline";
       this.inputs[index].style.borderColor = this.redColor;
-      Array.from(this.inputs).forEach((element, index) => {
-        element.style.borderColor = this.redColor;
-        this.inputContainers[index].getElementsByTagName("label")[0].style.color = this.redColor;
-    });
+      this.inputContainers[index].getElementsByTagName("label")[0].style.color = this.redColor;
     },
   
     hideError(index) {
@@ -123,9 +102,10 @@ const errorHandler = {
           }
  
         if(inputIndex === 2) {
-            if (String(input).length === 4 && input < currentDate.getFullYear()) {
+            if (input <= currentDate.getFullYear() 
+              && input > 100) {
               return true;
-            } else if(String(input).length === 4){
+            } else if(input > 100) {
                 return errorHandler.throwError(errorMessages.badYear, inputIndex);
             }else {
               return errorHandler.throwError(errorMessages.invalidDate, inputIndex);
@@ -142,13 +122,14 @@ function isReal(day, month, year) {
         {errorHandler.throwError(errorMessages.invalidDate,0)};
 } 
  
- function isPast(submitdate,currentDate){
-     if(submitdate > currentDate)
+ function isPast(){
+     if(submitDate.date > currentDate)
          {
             errorHandler.throwError(
-                 errorMessages.invalidDate,inputIndex);
+                 errorMessages.badYear,0);
              return false;
          }
+      else return true;
  }
 
 
@@ -183,13 +164,15 @@ function getInputs () {
 
 function showOutput() {
     const diff = currentDate - submitDate.date;
+    isPast();
+
     const dayValue = (1000 * 60 * 60 * 24);
     const showNoValue = "--";
     
     if(!anyTestBad){
         outputElements.years.innerHTML = Math.floor(diff / (dayValue * 365));
-        outputElements.months.innerHTML = Math.floor(diff / (dayValue * 30));
-        outputElements.days.innerHTML = Math.floor(diff / dayValue );
+        outputElements.months.innerHTML = Math.floor(diff / (dayValue * 30))%12;
+        outputElements.days.innerHTML = Math.floor(Math.floor(diff / dayValue ) % 30.437);
     }
     else
     {
